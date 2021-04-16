@@ -148,6 +148,7 @@ function fill_card(product) {
         detail_price_sale.hidden = true;
         detail_price_predH.hidden = true;
         detail_price_predL.hidden = true;
+        detail_amount.hidden = true;
         card.querySelector('.title-price-sale').hidden = true;
         card.querySelector('.title-price-predicted-high').hidden = true;
         card.querySelector('.title-price-predicted-low').hidden = true;
