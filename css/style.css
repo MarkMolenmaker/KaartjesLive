@@ -172,3 +172,10 @@ span.badge.new.sticker {
 
 /* Other */
 canvas.drawing, canvas.drawingBuffer { display: none; }
+.version {
+    color: #ffc885;
+    bottom: 0;
+    font-size: 20px;
+    text-align: center;
+    position: fixed;
+}
