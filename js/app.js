@@ -194,7 +194,7 @@ function generate_details(product) {
     details['predictedPrice'] = {};
     let actie_artikel = false;
     product.attributes.forEach(att => {
-        if (att.name === "sticker" && att.value != null) {
+        if (att.name === "sticker" && att.value !== null && att.value !== "") {
             actie_artikel = true;
             const sticker = att.value.toUpperCase()
             details['sticker'] = sticker;
