@@ -1,0 +1,170 @@
+@font-face {
+    font-family: 'Gunplay';
+    src: url('../fonts/Gunplay-Regular.woff2') format('woff2'),
+    url('../fonts/Gunplay-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* colours */
+:root{
+    --primary: #f79300;
+    --secondary: #616161;
+}
+
+* {
+    transition: .25s;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+
+    color: black;
+    background-color: var(--primary);
+}
+
+.body-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+/* Standards */
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.flex { display: flex; justify-content: center; align-items: center; }
+.inline-flex { display: inline-flex; justify-content: center; align-items: center; }
+.large { font-size: 10em; }
+.small { font-size: 1em; }
+.bordered { border: .5em var(--primary) solid; border-radius: 3em; }
+.nopadding { padding: 0; }
+.bold { font-weight: bold; }
+
+.home-btn {
+    margin-top: .5em;
+    margin-right: 1em;
+}
+
+/* Home Page */
+.scan-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+i {
+    color: var(--primary);
+    padding: .2em;
+}
+
+.scan-btn:hover {
+    background-color: var(--primary);
+    cursor: pointer;
+}
+
+.scan-btn:hover i {
+    color: white;
+}
+
+.scan-btn:active {
+    transform: scale(1.1);
+}
+
+.home-page {
+    position: absolute;
+    width: 100%;
+    height: 80%;
+    background-color: white;
+}
+
+/* Scanner Stuff */
+.scanner-page {
+    z-index: 10;
+}
+
+.camera-stream {
+    width: 100%;
+    height: 100%;
+}
+
+.exit-camera-btn {
+    bottom: 6em;
+    transition: .25s;
+    background-color: var(--secondary);
+}
+
+.exit-camera-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Nav */
+.nav {
+    position: fixed;
+    right: 1em;
+    z-index: 5;
+    margin: .7em;
+}
+
+/* Card Stuff */
+.result-page {
+    display: block;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.card-content {
+    text-align: left;
+}
+
+.pdf-action-btn {
+    position: absolute;
+    right: 1em;
+    top: 90%;
+}
+
+.content-details {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.pdf-buttons {
+    padding: 0 .5em;
+    display: inline-flex;
+}
+
+.pdf-btn {
+    opacity: 0;
+}
+
+li {
+    padding: 0 .5em;
+}
+
+span.badge.new.sticker {
+    font-family: Gunplay, sans-serif;
+    font-size: 1.5em;
+
+    padding: .5em .5em 1.5em;
+    margin: 0;
+
+    border: white 2px dashed;
+}
+
+.sticker-wrapper {
+    left: 0;
+    z-index: 1;
+    position: absolute;
+
+    padding: .5em;
+    margin: .5em;
+    border-radius: 2px;
+}
+
+/* Other */
+canvas.drawing, canvas.drawingBuffer { display: none; }

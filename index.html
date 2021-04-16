@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promotion Producer</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Manifest PWA -->
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+    <!-- Nav Element -->
+    <div class="nav">
+        <a id="home-btn" class="btn-floating btn waves-effect waves-light orange darken-3 home-btn"><i class="material-icons nopadding">home</i></a>
+    </div>
+
+    <div class="body-wrapper center flex">
+
+        <!-- Main Starting page -->
+        <div id="home-page" class="home-page page flex">
+            <div>
+                <a id="scan-btn" class="scan-btn bordered noselect" data-target="scan-page"><i class="material-icons large">qr_code_scanner</i></a>
+            </div>
+        </div>
+
+        <!-- Div to show the scanner -->
+        <div id="scanner-page" class="scanner-page page" hidden>
+            <div id="camera-stream" class="camera-stream"></div>
+            <div class="progress">
+                <div class="determinate" style="width: 70%"></div>
+            </div>
+            <a id="exit-camera-btn" class="waves-effect waves-light btn grey darken-2 exit-camera-btn">exit</a>
+        </div>
+
+        <!-- Data page -->
+        <div id="result-page" class="result-page page flex" hidden>
+
+        </div>
+
+    </div>
+
+    <template id="product-card" class="product-card">
+        <div class="row">
+            <div class="col s12 m6">
+                <div class="card">
+                    <div class="card-image">
+                        <label class="sticker-wrapper red"> <span class="new badge red sticker" data-badge-caption="">1+1 GRATIS</span> </label>
+                        <img class="detail-image" src="" alt="product image">
+                        <div class="pdf-action-btn">
+                            <ul class="pdf-buttons">
+                                <li><a class="pdf-btn btn-floating red skk">SKK</a></li>
+                                <li><a class="pdf-btn btn-floating yellow darken-1 disabled">SK</a></li>
+                                <li><a class="pdf-btn btn-floating green disabled">A5</a></li>
+                                <li><a class="pdf-btn btn-floating blue disabled">A3</a></li>
+                            </ul>
+                            <a class="btn-floating waves-effect waves-light red"><i class="material-icons nopadding">add</i></a>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="detail-title bold">productName</p>
+                        <div class="content-details">
+                            <p>Beschrijving:</p><p class="detail-short">shortDescription</p>
+                            <p>Reguliere Prijs:</p><p class="detail-price-regular">listPrice.value</p>
+                            <p>Actie Prijs:</p><p class="detail-price-sale">salePrice.value</p>
+                            <p>EAN Code:</p><p class="detail-ean">sku</p>
+                            <p>Geschat Normaal:</p><p class="detail-price-predicted-high">N/A</p>
+                            <p>Geschat Actie:</p><p class="detail-price-predicted-low">N/A</p>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="#" class="detail-link inline-flex">Bezoek op Coop Site...<i class="material-icons nopadding">open_in_new</i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Materialize Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- Quagga Script -->
+    <script src="js/libs/quagga.min.js"></script>
+
+    <!-- JsPDF Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+
+    <!-- Application Scripts -->
+    <script src="js/app.js"></script>
+<!--    <script src="js/skk-pdf.js"></script>-->
+    <script src="js/ui.js"></script>
+
+    <!-- ServiceWorker Script -->
+    <script> if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js'); </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        .full {
+            width: 100%;
+            height: 100%;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body>
+
+    <input id="hoofd-tekst-input" type="text" placeholder="Hoofdtekst" autocomplete="off" value="Tor del colle Montepulciano"/>
+    <input id="sub-tekst-input" type="text" placeholder="Subtekst" autocomplete="off" value="3 flessen à 750 ml"/>
+    <input id="combineren-input" type="checkbox" autocomplete="off" checked/>
+
+    <input id="actie-tekst-input" type="text" placeholder="1+1 Gratis" autocomplete="off" value="3 halen = 2 betalen"/>
+    <input id="actie-prijs-input" type="number" placeholder="Actie Prijs 8.88" autocomplete="off" value="11.98"/>
+    <input id="regular-prijs-hoog-input" type="number" placeholder="Prijs Hoog 9.99" autocomplete="off" value="17.97"/>
+    <input id="regular-prijs-laag-input" type="number" placeholder="Prijs Laag 7.77" autocomplete="off" value="16.97"/>
+    <input id="nix18-input" type="checkbox" autocomplete="off" checked/>
+
+    <button id="generate">Generate</button>
+
+    <div class="container full">
+        <div id="output" class="full"></div>
+        <div id="output2" class="full"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.5/pdfobject.min.js"></script>
+    <script src="fonts/js/fonts.js"></script>
+
+    <script src="js/skk-pdf.js"></script>
+
+</body>
+</html>
