@@ -161,7 +161,9 @@ function fill_card(product) {
     if (details.sticker) card.querySelector('.badge').textContent = details.sticker;
     else card.querySelector('.sticker-wrapper').hidden = true;
 
-    card.querySelector('.skk').addEventListener('click', () => { setSKK(details); });
+    card.querySelector('.skk').addEventListener('click', () => {
+        window.open(setSKK(details));
+    });
 
     result_page.appendChild(card);
 
