@@ -27,42 +27,28 @@ const options = {
     }
 };
 
-const hoofd_tekst_input = document.querySelector('#hoofd-tekst-input');
-const sub_tekst_input = document.querySelector('#sub-tekst-input');
-const combineren_input = document.querySelector('#combineren-input');
+function setSKK(details) {
+    const hoofd_tekst = details.name;
+    const sub_tekst = details.actieGetal > 1 ? details.actieGetal + " stuks" : "Per stuk";
+    const combineren = details.actieGetal > 1;
 
-const actie_tekst_input = document.querySelector('#actie-tekst-input');
-const actie_prijs_input = document.querySelector('#actie-prijs-input');
-const regular_prijs_hoog_input = document.querySelector('#regular-prijs-hoog-input');
-const regular_prijs_laag_input = document.querySelector('#regular-prijs-laag-input');
+    const actie_tekst = details.sticker;
+    const actie_prijs_e = Math.floor(details.predictedPrice.low) + ".";
+    const actie_prijs_c = "" + Math.round(((details.predictedPrice.low - Math.floor(details.predictedPrice.low)) + Number.EPSILON) * 100);
 
-const nix18_input = document.querySelector('#nix18-input');
+    const regular_prijs_hoog = details.predictedPrice.high >= 0.01
+    const regular_prijs_hoog_e = Math.floor(details.predictedPrice.high) + ".";
+    const regular_prijs_hoog_c = ("" + Math.round(((details.predictedPrice.high - Math.floor(details.predictedPrice.high)) + Number.EPSILON) * 100)).padStart(2, '0');
 
-PDFObject.embed(createPDF(), '#output')
-PDFObject.embed("template.pdf", '#output2')
+    const regular_prijs_laag = false;
+    const regular_prijs_laag_e = "0";
+    const regular_prijs_laag_c = "0";
 
-function createPDF() {
-    const doc = new jsPDF();
-
-    const hoofd_tekst = hoofd_tekst_input.value;
-    const sub_tekst = sub_tekst_input.value;
-    const combineren = combineren_input.checked;
-
-    const actie_tekst = actie_tekst_input.value.toUpperCase();
-    const actie_prijs_e = Math.floor(actie_prijs_input.value) + ".";
-    const actie_prijs_c = "" + Math.round(((actie_prijs_input.value - Math.floor(actie_prijs_input.value)) + Number.EPSILON) * 100);
-
-    const regular_prijs_hoog = regular_prijs_hoog_input.value >= 0.01
-    const regular_prijs_hoog_e = Math.floor(regular_prijs_hoog_input.value) + ".";
-    const regular_prijs_hoog_c = ("" + Math.round(((regular_prijs_hoog_input.value - Math.floor(regular_prijs_hoog_input.value)) + Number.EPSILON) * 100)).padStart(2, '0');
-
-    const regular_prijs_laag = regular_prijs_laag_input.value >= 0.01
-    const regular_prijs_laag_e = Math.floor(regular_prijs_laag_input.value) + ".";
-    const regular_prijs_laag_c = ("" + Math.round(((regular_prijs_laag_input.value - Math.floor(regular_prijs_laag_input.value)) + Number.EPSILON) * 100)).padStart(2, '0');
-
-    const nix18 = nix18_input.checked;
+    const nix18 = false;
 
     // Hoofd Tekst
+    const doc = new jsPDF();
+
     const hoofd_tekst_split = doc.splitTextToSize(hoofd_tekst, 55);
 
     doc.setFont('Museo-700', 'normal', 'normal');
@@ -81,7 +67,7 @@ function createPDF() {
     // Actie Mechanisme
     // Actie Lijn
     const ctx = doc.context2d;
-    let width = doc.getCharWidthsArray(actie_tekst).reduce((a, b) => a + b) * 4.5;
+    let width = doc.getCharWidthsArray(actie_tekst).reduce((a, b) => a + b) * 4.4 + (20 / actie_tekst.length);
 
     ctx.fillStyle = "#000";
     ctx.fillRect(100, 30, -width - .5, 6);
@@ -155,9 +141,5 @@ function createPDF() {
         doc.addImage(img, 'PNG', options.nix18.x, 62.5, 11, 5.5);
     }
 
-    return doc.output('datauristring');
+    return doc.output('dataurlnewwindow');
 }
-
-document.querySelector('#generate').addEventListener('click', () => {
-   PDFObject.embed(createPDF(), "#output")
-});

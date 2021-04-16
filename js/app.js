@@ -16,8 +16,6 @@ function startScanner() {
         capacity: capacity
     });
 
-    result_page.childNodes.forEach(node => result_page.removeChild(node));
-
     Quagga.init({
         inputStream: {
             name: "Live",
@@ -130,7 +128,8 @@ function fill_card(product) {
         detail_price_predL = card.querySelector('.detail-price-predicted-low'),
         detail_ean = card.querySelector('.detail-ean'),
         detail_link = card.querySelector('.detail-link'),
-        detail_image = card.querySelector('.detail-image');
+        detail_image = card.querySelector('.detail-image'),
+        detail_amount = card.querySelector('.detail-amount');
 
     const details = generate_details(product);
 
@@ -139,11 +138,20 @@ function fill_card(product) {
     detail_ean.textContent = details.ean;
 
     detail_price_regular.textContent = details.listPrice;
-    detail_price_sale.textContent = details.salePrice;
 
-    if (details.predictedPrice != null) {
+    if (details.actieArtikel) {
+        detail_price_sale.textContent = details.salePrice;
         detail_price_predH.textContent = details.predictedPrice.high;
         detail_price_predL.textContent = details.predictedPrice.low;
+        detail_amount.textContent = details.actieGetal;
+    } else {
+        detail_price_sale.hidden = true;
+        detail_price_predH.hidden = true;
+        detail_price_predL.hidden = true;
+        card.querySelector('.title-price-sale').hidden = true;
+        card.querySelector('.title-price-predicted-high').hidden = true;
+        card.querySelector('.title-price-predicted-low').hidden = true;
+        card.querySelector('.title-amount').hidden = true;
     }
 
     detail_link.href = details.siteUrl;
@@ -152,7 +160,7 @@ function fill_card(product) {
     if (details.sticker) card.querySelector('.badge').textContent = details.sticker;
     else card.querySelector('.sticker-wrapper').hidden = true;
 
-    card.querySelector('.skk').addEventListener('click', () => { addSKK(details); });
+    card.querySelector('.skk').addEventListener('click', () => { setSKK(details); });
 
     result_page.appendChild(card);
 
@@ -183,57 +191,68 @@ function generate_details(product) {
     details['listPrice'] = product.listPrice.value;
     details['salePrice'] = product.salePrice.value;
 
-    let sticker = "";
-    product.attributes.forEach(att => { if (att.name === "sticker") sticker = att.value; });
-    if (sticker !== "") details['sticker'] = sticker;
-
     details['predictedPrice'] = {};
-    console.log(sticker)
-    console.log(sticker.includes("HALEN"))
+    let actie_artikel = false;
+    product.attributes.forEach(att => {
+        if (att.name === "sticker" && att.value != null) {
+            actie_artikel = true;
+            const sticker = att.value.toUpperCase()
+            details['sticker'] = sticker;
+            details['actieGetal'] = ""
 
-    if (sticker === "ACTIE") {
-        details['predictedPrice'].high = product.listPrice.value;
-        details['predictedPrice'].low = product.salePrice.value;
-    }
-    else if (sticker.includes("GRATIS")) {
-        const digits = sticker.slice(0, -7).split(" + ");
-        details['predictedPrice'].high = parseInt(digits[0]) * product.listPrice.value + parseInt(digits[1]) * product.listPrice.value;
-        details['predictedPrice'].low = parseInt(digits[0]) * product.listPrice.value;
-    }
-    else if (sticker.includes("VOOR")) {
-        const digits = sticker.split(" VOOR ");
-        details['predictedPrice'].high = parseInt(digits[0]) * product.listPrice.value;
-        details['predictedPrice'].low = parseFloat(digits[1]);
-    }
-    else if (sticker.includes("%")) {
-        const digits = sticker.split("%");
-        details['predictedPrice'].high = product.listPrice.value;
-        details['predictedPrice'].low = product.listPrice.value * (1 - parseInt(digits[0]) / 100);
-    }
-    else if (sticker.includes("KORTING") && !sticker.includes("%")) {
-        const digits = sticker.split(" ");
-        details['predictedPrice'].high = product.listPrice.value;
-        details['predictedPrice'].low = product.listPrice.value - parseFloat(digits[0]);
-    }
-    else if (sticker.includes("HALVE PRIJS")) {
-        const digit = sticker.slice(0, -13);
-        details['predictedPrice'].high = product.listPrice.value * parseInt(digit);
-        details['predictedPrice'].low = product.listPrice.value * parseInt(digit) - product.listPrice.value / 2;
-    }
-    else if (sticker.includes("HALEN")) {
-        const terms = sticker.split(" = ");
-        const get = terms[0].slice(0, -6);
-        const pay = terms[1].slice(0, -8);
+            if (sticker === "ACTIE") {
+                details['predictedPrice'].high = product.listPrice.value;
+                details['predictedPrice'].low = product.salePrice.value;
+                details['actieGetal'] = 1;
+            }
+            else if (sticker.includes("GRATIS")) {
+                const digits = sticker.slice(0, -7).split(" + ");
+                details['predictedPrice'].high = parseInt(digits[0]) * product.listPrice.value + parseInt(digits[1]) * product.listPrice.value;
+                details['predictedPrice'].low = parseInt(digits[0]) * product.listPrice.value;
+                details['actieGetal'] = parseInt(digits[0]) + parseInt(digits[1]);
+            }
+            else if (sticker.includes("VOOR")) {
+                const digits = sticker.split(" VOOR ");
+                details['predictedPrice'].high = parseInt(digits[0]) * product.listPrice.value;
+                details['predictedPrice'].low = parseFloat(digits[1]);
+                details['actieGetal'] = parseInt(digits[0]);
+            }
+            else if (sticker.includes("%")) {
+                const digits = sticker.split("%");
+                details['predictedPrice'].high = product.listPrice.value;
+                details['predictedPrice'].low = product.listPrice.value * (1 - parseInt(digits[0]) / 100);
+                details['actieGetal'] = 1;
+            }
+            else if (sticker.includes("KORTING") && !sticker.includes("%")) {
+                const digits = sticker.split(" ");
+                details['predictedPrice'].high = product.listPrice.value;
+                details['predictedPrice'].low = product.listPrice.value - parseFloat(digits[0]);
+                details['actieGetal'] = 1;
+            }
+            else if (sticker.includes("HALVE PRIJS")) {
+                const digit = sticker.slice(0, -13);
+                details['predictedPrice'].high = product.listPrice.value * parseInt(digit);
+                details['predictedPrice'].low = product.listPrice.value * parseInt(digit) - product.listPrice.value / 2;
+                details['actieGetal'] = parseInt(digit);
+            }
+            else if (sticker.includes("HALEN")) {
+                const terms = sticker.split(" = ");
+                const get = terms[0].slice(0, -6);
+                const pay = terms[1].slice(0, -8);
 
-        details['predictedPrice'].high = product.listPrice.value * parseInt(get);
-        details['predictedPrice'].low = product.listPrice.value * parseInt(pay);
-    }
-    else {
-        details['predictedPrice'].high = "N/A";
-        details['predictedPrice'].low = "N/A";
-    }
+                details['predictedPrice'].high = product.listPrice.value * parseInt(get);
+                details['predictedPrice'].low = product.listPrice.value * parseInt(pay);
+                details['actieGetal'] = parseInt(get);
+            }
+            else {
+                details['predictedPrice'].high = "N/A";
+                details['predictedPrice'].low = "N/A";
+                details['actieGetal'] = "";
+            }
+        }
+    });
 
-    console.log(details['predictedPrice'])
+    details['actieArtikel'] = actie_artikel;
 
     /*
         ACTIE

@@ -70,11 +70,13 @@
                         <p class="detail-title bold">productName</p>
                         <div class="content-details">
                             <p>Beschrijving:</p><p class="detail-short">shortDescription</p>
-                            <p>Reguliere Prijs:</p><p class="detail-price-regular">listPrice.value</p>
-                            <p>Actie Prijs:</p><p class="detail-price-sale">salePrice.value</p>
+                            <p>Reguliere Prijs (1ST):</p><p class="detail-price-regular">listPrice.value</p>
+                            <p class="red-text title-price-sale bold">Actie Prijs (1ST):</p><p class="detail-price-sale red-text bold">salePrice.value</p>
                             <p>EAN Code:</p><p class="detail-ean">sku</p>
-                            <p>Geschat Normaal:</p><p class="detail-price-predicted-high">N/A</p>
-                            <p>Geschat Actie:</p><p class="detail-price-predicted-low">N/A</p>
+                            <p></p><p></p>
+                            <p class="red-text title-price-predicted-high bold">Geschat Normaal:</p><p class="detail-price-predicted-high red-text bold">N/A</p>
+                            <p class="red-text title-price-predicted-low bold">Geschat Actie:</p><p class="detail-price-predicted-low red-text bold">N/A</p>
+                            <p class="red-text title-amount bold">Geldig vanaf:</p><p class="detail-amount red-text bold">N/A</p>
                         </div>
                     </div>
                     <div class="card-action">
@@ -93,10 +95,11 @@
 
     <!-- JsPDF Script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="fonts/js/fonts.js"></script>
 
     <!-- Application Scripts -->
+    <script src="js/skk-pdf.js"></script>
     <script src="js/app.js"></script>
-<!--    <script src="js/skk-pdf.js"></script>-->
     <script src="js/ui.js"></script>
 
     <!-- ServiceWorker Script -->
