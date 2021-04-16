@@ -130,7 +130,7 @@ i {
 
 .content-details {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 2fr 3fr;
 }
 
 .pdf-buttons {
@@ -164,10 +164,6 @@ span.badge.new.sticker {
     padding: .5em;
     margin: .5em;
     border-radius: 2px;
-}
-
-.detail-amount::after {
-    content: " stuk(s)";
 }
 
 /* Other */

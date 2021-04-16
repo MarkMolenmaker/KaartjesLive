@@ -39,6 +39,7 @@ const regular_prijs_laag_input = document.querySelector('#regular-prijs-laag-inp
 const nix18_input = document.querySelector('#nix18-input');
 
 PDFObject.embed(createPDF(), '#output')
+PDFObject.embed("template.pdf", '#output2')
 
 function createPDF() {
     const doc = new jsPDF();
