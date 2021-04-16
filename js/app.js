@@ -143,7 +143,7 @@ function fill_card(product) {
         detail_price_sale.textContent = details.salePrice;
         detail_price_predH.textContent = details.predictedPrice.high;
         detail_price_predL.textContent = details.predictedPrice.low;
-        detail_amount.textContent = details.actieGetal + " stuk(s)";
+        detail_amount.textContent = details.actieGetal;
     } else {
         detail_price_sale.hidden = true;
         detail_price_predH.hidden = true;

@@ -166,5 +166,9 @@ span.badge.new.sticker {
     border-radius: 2px;
 }
 
+.detail-amount::after {
+    content: " stuk(s)";
+}
+
 /* Other */
 canvas.drawing, canvas.drawingBuffer { display: none; }
