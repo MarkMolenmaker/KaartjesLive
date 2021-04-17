@@ -143,7 +143,7 @@ function fill_card(product) {
         detail_price_sale.textContent = details.salePrice;
         detail_price_predH.textContent = details.predictedPrice.high;
         detail_price_predL.textContent = details.predictedPrice.low;
-        detail_amount.textContent = details.actieGetal;
+        detail_amount.textContent = details.actieGetal + " stuk(s)";
     } else {
         detail_price_sale.hidden = true;
         detail_price_predH.hidden = true;
@@ -197,7 +197,7 @@ function generate_details(product) {
     details['predictedPrice'] = {};
     let actie_artikel = false;
     product.attributes.forEach(att => {
-        if (att.name === "sticker" && att.value !== null && att.value !== "") {
+        if (att.name === "sticker" && att.value !== null && att.value !== "" && att.value !== undefined) {
             actie_artikel = true;
             const sticker = att.value.toUpperCase()
             details['sticker'] = sticker;
