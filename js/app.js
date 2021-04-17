@@ -164,14 +164,17 @@ function fill_card(product) {
     card.querySelector('.skk').addEventListener('click', () => {
         window.open(setSKK(details));
     });
+    if (!details.actieArtikel) card.querySelector('.open-btn').classList.add('disabled')
 
     result_page.appendChild(card);
 
-    var elems = document.querySelectorAll('.pdf-action-btn');
-    var instances = M.FloatingActionButton.init(elems, {
-        direction: 'left',
-        hoverEnabled: false
-    });
+    if (details.actieArtikel) {
+        var elems = document.querySelectorAll('.pdf-action-btn');
+        var instances = M.FloatingActionButton.init(elems, {
+            direction: 'left',
+            hoverEnabled: false
+        });
+    }
 
 }
 
