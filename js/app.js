@@ -1,9 +1,13 @@
 const home_page = document.querySelector('#home-page'),
+    search_page = document.querySelector('#search-page'),
+    print_page = document.querySelector('#print-page'),
     scanner_page = document.querySelector('#scanner-page'),
     result_page = document.querySelector('#result-page');
 
 const capacity = 20;
 let collector;
+
+const kaartjes = [];
 
 function startScanner() {
 
@@ -53,8 +57,7 @@ Quagga.onDetected(() => {
         const codes = [];
         collector.getResults().forEach(code => codes.push(code.codeResult.code));
         Quagga.stop();
-        display_page(result_page);
-        fetch_product(mode(codes));
+        load_results(mode(codes));
     }
 });
 
@@ -69,10 +72,54 @@ document.querySelector("#exit-camera-btn").addEventListener("click", () => {
     display_page(home_page);
 });
 
-// Home
+// Nav Buttons
 document.querySelector("#home-btn").addEventListener("click", () => {
     display_page(home_page);
 });
+document.querySelector("#search-btn").addEventListener("click", () => {
+    display_page(search_page);
+});
+document.querySelector("#print-btn").addEventListener("click", () => {
+    //display_page(print_page);
+    generatePDF(kaartjes);
+});
+document.querySelector("#results-btn").addEventListener("click", () => {
+    display_page(result_page);
+});
+
+// Searching
+document.querySelector("#do-search-btn").addEventListener('click', () => {
+    const search_term = document.querySelector('#search-input').value;
+    if (search_term != null && search_term !== "" && search_term.length >= 3) {
+        load_results(search_term);
+    } else document.querySelector('#search-feedback').textContent = "Ongeldige zoekopdracht!";
+});
+
+function load_results(search_term) {
+    while (result_page.firstChild)
+        result_page.removeChild(result_page.lastChild);
+    result_page.appendChild(loading());
+    display_page(result_page);
+    fetch_products(search_term);
+}
+
+function loading() {
+    const elem = document.createElement('div');
+    elem.classList.add('loading')
+    elem.innerHTML =
+        `<div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-yellow-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                    <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>`
+    return elem;
+}
 
 function mode(array)
 {
@@ -103,17 +150,23 @@ function display_page(element) {
     });
 }
 
-function fetch_product(ean_code) {
+function fetch_products(ean_code) {
     const URL = "https://api.coop.nl/INTERSHOP/rest/WFS/COOP-COOPBase-Site/-;loc=nl_NL;cur=EUR/culios/products?searchTerm=" + ean_code + "&amount=9&attrs=sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating,longtail,sticker,maxXLabel,Inhoud&attributeGroup=PRODUCT_LIST_DETAIL_ATTRIBUTES&productFilter=fallback_searchquerydefinition&offset=0";
     fetch(URL, { method: 'GET' })
         .then(respone => respone.json())
         .then(json => {
-            if (json.elements.length === 0)
-                result_page.textContent = "Geen producten gevonden!";
-            json.elements.forEach(product => {
-               fill_card(product);
-            });
-        });
+            if (json.total <= 0) {
+                display_page(home_page);
+                M.toast({html: 'Geen resultaten gevonden!'})
+            } else {
+                json.elements.forEach(product => {
+                    fill_card(product);
+                });
+            }
+        }).finally(() => {
+            const childs = result_page.querySelectorAll('.loading')
+            childs.forEach(child => result_page.removeChild(child));
+    });
 }
 
 function fill_card(product) {
@@ -122,6 +175,7 @@ function fill_card(product) {
 
     const detail_title = card.querySelector('.detail-title'),
         detail_short = card.querySelector('.detail-short'),
+        detail_volume = card.querySelector('.detail-volume'),
         detail_price_regular = card.querySelector('.detail-price-regular'),
         detail_price_sale = card.querySelector('.detail-price-sale'),
         detail_price_predH = card.querySelector('.detail-price-predicted-high'),
@@ -135,6 +189,7 @@ function fill_card(product) {
 
     detail_title.textContent = details.name;
     detail_short.textContent = details.shortDesc;
+    detail_volume.textContent = details.volume;
     detail_ean.textContent = details.ean;
 
     detail_price_regular.textContent = details.listPrice;
@@ -162,7 +217,7 @@ function fill_card(product) {
     else card.querySelector('.sticker-wrapper').hidden = true;
 
     card.querySelector('.skk').addEventListener('click', () => {
-        window.open(setSKK(details));
+        kaartjes.push(generateSKKContent(details));
     });
     if (!details.actieArtikel) card.querySelector('.open-btn').classList.add('disabled')
 
@@ -255,6 +310,8 @@ function generate_details(product) {
                 details['predictedPrice'].low = "N/A";
                 details['actieGetal'] = "";
             }
+        } else if (att.name === "Inhoud" && att.value !== null && att.value !== "" && att.value !== undefined) {
+            details['volume'] = att.value;
         }
     });
 

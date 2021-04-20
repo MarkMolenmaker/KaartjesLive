@@ -1,4 +1,5 @@
 const options = {
+    color: '#1e1f1c',
     hoofdtekst: {
         x: 39,
         y: 9,
@@ -14,12 +15,12 @@ const options = {
         y: 8
     },
     actie_tekst : {
-        x: 100,
-        y: 30
+        x: 93.3,
+        y: 47
     },
     actie_prijs: {
         x: 100,
-        y: 60
+        y: 57.5
     },
     nix18: {
         x: 39,
@@ -81,30 +82,34 @@ function createPDF() {
     // Actie Mechanisme
     // Actie Lijn
     const ctx = doc.context2d;
-    let width = doc.getCharWidthsArray(actie_tekst).reduce((a, b) => a + b) * 4.4 + (20 / actie_tekst.length);
+    let width = doc.getCharWidthsArray(actie_tekst).reduce((a, b) => a + b) * 4.3 + (20 / actie_tekst.length);
 
-    ctx.fillStyle = "#000";
-    ctx.fillRect(100, 30, -width, 6);
+    ctx.fillStyle = options.color;
+    ctx.setTransform(1, -0.15, 0, 1, 0, 0); // to skew
+    ctx.fillRect(100, 44, -width, 6);
 
     // Actie Tekst
-    doc.setFont('Gunplay-Regular', 'normal', 'normal');
+    doc.setFont('Gunplay-Skew', 'normal', 'normal');
     doc.setFontSize(14);
     ctx.fillStyle = "#fff"
     ctx.textAlign = "end";
-    ctx.setTransform(.99, 0, 0, 1.16, 0, 0);
-    ctx.fillText(actie_tekst, options.actie_tekst.x, options.actie_tekst.y);
+    ctx.textBaseline = "middle"
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.rotate(-.15); // To rotate
+    ctx.fillText(actie_tekst, options.actie_tekst.x, options.actie_tekst.y + doc.getCharWidthsArray(actie_tekst).reduce((a, b) => a + b) * 0.7);
 
     // Actie Prijs
-    ctx.fillStyle = "#000"
+    doc.setFont('Gunplay-Regular', 'normal', 'normal');
+    ctx.fillStyle = options.color;
     doc.setFontSize(36);
-    ctx.setTransform(1, 0, 0, .895, 0, 0);
-    ctx.fillText(actie_prijs_c, options.actie_prijs.x, options.actie_prijs.y); // Centen
+    ctx.setTransform(1, 0, 0, .945, 0, 0);
+    ctx.fillText(actie_prijs_c, options.actie_prijs.x, options.actie_prijs.y - 5); // Centen
 
     width = doc.getCharWidthsArray(actie_prijs_c).reduce((a, b) => a + b) * 8;
 
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     doc.setFontSize(62);
-    ctx.fillText(actie_prijs_e, options.actie_prijs.x - width, options.actie_prijs.y); // Euros
+    ctx.fillText(actie_prijs_e, options.actie_prijs.x - width, options.actie_prijs.y - 5); // Euros
 
     // Regulier Hoog
     doc.setFont('Museo-Sans-500', 'normal', 'normal');
@@ -136,16 +141,16 @@ function createPDF() {
     ctx.lineCap = "round";
 
     ctx.beginPath();
-    ctx.moveTo(options.actie_prijs.x - width, options.actie_prijs.y - 6.5);
-    ctx.lineTo(options.actie_prijs.x - width - self_width, options.actie_prijs.y);
+    ctx.moveTo(options.actie_prijs.x - width, options.actie_prijs.y - 4.5);
+    ctx.lineTo(options.actie_prijs.x - width - self_width, options.actie_prijs.y + 2.5);
     if (regular_prijs_hoog) ctx.stroke();
 
     // Lijn Prijs Laag
     self_width = doc.getCharWidthsArray(regular_prijs_laag_e + regular_prijs_laag_c).reduce((a, b) => a + b) * 5.5;
 
     ctx.beginPath();
-    ctx.moveTo(options.actie_prijs.x - width, options.actie_prijs.y - 14);
-    ctx.lineTo(options.actie_prijs.x - width - self_width, options.actie_prijs.y - 8);
+    ctx.moveTo(options.actie_prijs.x - width, options.actie_prijs.y - 12.5);
+    ctx.lineTo(options.actie_prijs.x - width - self_width, options.actie_prijs.y - 5.5);
     if (regular_prijs_laag) ctx.stroke();
 
     // Nix18

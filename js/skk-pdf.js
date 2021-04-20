@@ -141,5 +141,6 @@ function setSKK(details) {
         doc.addImage(img, 'PNG', options.nix18.x, 62.5, 11, 5.5);
     }
 
-    return doc.output('datauristring');
+    return doc.save('test.pdf');
+    //return doc.output('datauristring');
 }

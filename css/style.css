@@ -46,9 +46,8 @@ html, body {
 .nopadding { padding: 0; }
 .bold { font-weight: bold; }
 
-.home-btn {
-    margin-top: .5em;
-    margin-right: 1em;
+.menu-btn {
+    margin: 1em;
 }
 
 /* Home Page */
@@ -103,12 +102,34 @@ i {
     transform: scale(1.1);
 }
 
+/* Search Page */
+.search-page {
+    position: absolute;
+    width: 100%;
+    height: 80%;
+    background-color: white;
+}
+
+.search-wrapper {
+    display: grid;
+    margin: 1em;
+    grid-gap: 1em;
+    grid-template-columns: 1fr auto;
+}
+
 /* Nav */
 .nav {
     position: fixed;
-    right: 1em;
+    right: 0;
     z-index: 5;
-    margin: .7em;
+}
+
+.menu-btns {
+    display: inline-flex;
+}
+
+.nav-btn {
+    opacity: 0;
 }
 
 /* Card Stuff */
@@ -168,6 +189,11 @@ span.badge.new.sticker {
 
 .detail-amount::after {
     content: " stuk(s)";
+}
+
+.loading {
+    position: relative;
+    top: 30%;
 }
 
 /* Other */

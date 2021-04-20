@@ -21,7 +21,13 @@
 
     <!-- Nav Element -->
     <div class="nav">
-        <a id="home-btn" class="btn-floating btn waves-effect waves-light orange darken-3 home-btn"><i class="material-icons nopadding">home</i></a>
+        <ul class="menu-btns">
+            <li><a class="nav-btn btn-floating yellow darken-3" id="results-btn"><i class="material-icons nopadding">inventory</i></a></li>
+            <li><a class="nav-btn btn-floating yellow darken-3" id="print-btn"><i class="material-icons nopadding">print</i></a></li>
+            <li><a class="nav-btn btn-floating yellow darken-3" id="search-btn"><i class="material-icons nopadding">search</i></a></li>
+            <li><a class="nav-btn btn-floating yellow darken-3" id="home-btn"><i class="material-icons nopadding">home</i></a></li>
+        </ul>
+        <a id="menu-btn" class="btn-floating btn waves-effect waves-light orange darken-3 menu-btn"><i class="material-icons nopadding">menu</i></a>
     </div>
 
     <div class="body-wrapper center flex">
@@ -31,7 +37,7 @@
             <div>
                 <a id="scan-btn" class="scan-btn bordered noselect" data-target="scan-page"><i class="material-icons large">qr_code_scanner</i></a>
             </div>
-            <p class="version">v0.1.2</p>
+            <p class="version">v0.2.1</p>
         </div>
 
         <!-- Div to show the scanner -->
@@ -43,9 +49,32 @@
             <a id="exit-camera-btn" class="waves-effect waves-light btn grey darken-2 exit-camera-btn">exit</a>
         </div>
 
+        <!-- Div to show the scanner -->
+        <div id="search-page" class="search-page page" hidden>
+            <label for="search-input">Gebruik een productnaam / ean code om te zoeken</label>
+            <div class="search-wrapper">
+                <input id="search-input" type="text" placeholder="Zoek term..."/>
+                <a class="btn-floating yellow darken-3" id="do-search-btn"><i class="material-icons nopadding">search</i></a>
+            </div>
+            <p id="search-feedback"></p>
+        </div>
+
         <!-- Data page -->
         <div id="result-page" class="result-page page flex" hidden>
+            <div class="loading">
 
+                <div class="preloader-wrapper big active">
+                    <div class="spinner-layer spinner-blue-only">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                        <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -71,6 +100,7 @@
                         <p class="detail-title bold">productName</p>
                         <div class="content-details">
                             <p>Beschrijving:</p><p class="detail-short">shortDescription</p>
+                            <p>Inhoud:</p><p class="detail-volume">volume</p>
                             <p>Reguliere Prijs (1ST):</p><p class="detail-price-regular">listPrice.value</p>
                             <p class="red-text title-price-sale bold">Actie Prijs (1ST):</p><p class="detail-price-sale red-text bold">salePrice.value</p>
                             <p>EAN Code:</p><p class="detail-ean">sku</p>
@@ -99,7 +129,7 @@
     <script src="fonts/js/fonts.js"></script>
 
     <!-- Application Scripts -->
-    <script src="js/skk-pdf.js"></script>
+    <script src="js/pdf3.js"></script>
     <script src="js/app.js"></script>
     <script src="js/ui.js"></script>
 
