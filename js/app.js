@@ -218,6 +218,8 @@ function fill_card(product) {
 
     card.querySelector('.skk').addEventListener('click', () => {
         kaartjes.push(generateSKKContent(details));
+        const count = document.querySelector('#count');
+        count.textContent = "" + kaartjes.length;
     });
     if (!details.actieArtikel) card.querySelector('.open-btn').classList.add('disabled')
 

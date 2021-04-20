@@ -196,6 +196,15 @@ span.badge.new.sticker {
     top: 30%;
 }
 
+span.badge.count {
+    display: block;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    color: #000;
+    font-weight: bold;
+}
+
 /* Other */
 canvas.drawing, canvas.drawingBuffer { display: none; }
 .version {

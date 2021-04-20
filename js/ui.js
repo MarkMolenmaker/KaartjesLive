@@ -4,4 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
         direction: 'left',
         hoverEnabled: false
     });
+    document.querySelector('#menu-btn').addEventListener('click', () => {
+        const count = document.querySelector('#count');
+        count.textContent = "" + kaartjes.length;
+    });
 });
